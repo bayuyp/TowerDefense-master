@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Elements>
+  <PathPieces>
+    <Path X="0.201421663" Y="-4.01474857" />
+    <Path X="-0.9179783" Y="-4.13383341" />
+    <Path X="-0.798893034" Y="-3.08588433" />
+    <Path X="-0.798893034" Y="-1.942667" />
+    <Path X="-0.679808" Y="-0.847083867" />
+    <Path X="-1.75157416" Y="-0.7994498" />
+    <Path X="-2.82334018" Y="-0.823266864" />
+    <Path X="-3.847472" Y="-0.751815736" />
+    <Path X="-3.823655" Y="-1.75213075" />
+    <Path X="-3.776021" Y="-2.80008" />
+    <Path X="-3.70456982" Y="-3.94329715" />
+    <Path X="-4.800153" Y="-3.94329715" />
+    <Path X="-5.94337" Y="-3.89566326" />
+    <Path X="-7.01513624" Y="-3.8718462" />
+  </PathPieces>
+  <Waypoints>
+    <Waypoint X="1.08" Y="-4.18" />
+    <Waypoint X="0.04" Y="-4.18" />
+    <Waypoint X="-1.21" Y="-4.39" />
+    <Waypoint X="-1" Y="-1.06" />
+    <Waypoint X="-4.2" Y="-1.06" />
+    <Waypoint X="-3.93" Y="-4.2" />
+    <Waypoint X="-8.75" Y="-4.2" />
+  </Waypoints>
+  <Rounds>
+    <Round NoOfEnemiesEasy="3" NoOfEnemiesNormal="2" NoOfEnemiesHard="1" />
+  </Rounds>
+  <Tower X="-8.510433" Y="-3.77245355" />
+  <OtherStuff InitialMoney="100" />
+</Elements>

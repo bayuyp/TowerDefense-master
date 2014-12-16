@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Elements>
+  <PathPieces>
+    <Path X="-6.176704" Y="0.328797936" />
+    <Path X="-5.00242567" Y="0.344454974" />
+    <Path X="-3.79683328" Y="0.3131409" />
+    <Path X="-2.52861261" Y="0.3131409" />
+    <Path X="-1.3230201" Y="0.297483861" />
+    <Path X="-0.0391424373" Y="0.234855667" />
+    <Path X="-0.133084714" Y="-0.9707368" />
+    <Path X="-0.148741752" Y="-2.06673" />
+    <Path X="-0.101770639" Y="-3.068781" />
+    <Path X="1.07250774" Y="-3.084438" />
+    <Path X="2.37204242" Y="-3.068781" />
+  </PathPieces>
+  <Waypoints>
+    <Waypoint X="3.57" Y="-3.24" />
+    <Waypoint X="2.12" Y="-3.29" />
+    <Waypoint X="-0.35" Y="-3.27" />
+    <Waypoint X="-0.23" Y="0" />
+    <Waypoint X="-7.88" Y="0.16" />
+  </Waypoints>
+  <Rounds>
+    <Round NoOfEnemiesEasy="5" NoOfEnemiesNormal="3" NoOfEnemiesHard="1" />
+	<Round NoOfEnemiesEasy="6" NoOfEnemiesNormal="3" NoOfEnemiesHard="2" />
+  </Rounds>
+  <Tower X="-7.63280964" Y="0.391426146" />
+  <OtherStuff InitialMoney="200" MinCarrotSpawnTime="1" MaxCarrotSpawnTime="1" />
+</Elements>
