@@ -53,6 +53,7 @@ public class GameManager : MonoBehaviour
     [HideInInspector]
     public bool FinalRoundFinished;
     public GUIText infoText;
+	public int gameLevel = 2;
 
     private object lockerObject = new object();
 
@@ -64,7 +65,7 @@ public class GameManager : MonoBehaviour
         Enemies = new List<GameObject>();
         PathPiecesParent = GameObject.Find("PathPieces");
         WaypointsParent = GameObject.Find("Waypoints");
-        levelStuffFromXML = Utilities.ReadXMLFile(2);
+        levelStuffFromXML = Utilities.ReadXMLFile(gameLevel);
 
         CreateLevelFromXML();
 

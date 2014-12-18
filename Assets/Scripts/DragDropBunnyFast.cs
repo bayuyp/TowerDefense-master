@@ -32,7 +32,7 @@ public class DragDropBunnyFast : MonoBehaviour
     {
         //if we have money and we can drag a new bunny
         if (Input.GetMouseButtonDown(0) && !isDragging &&
-            GameManager.Instance.MoneyAvailable >= Constants.BunnyCost)
+            GameManager.Instance.MoneyAvailable >= Constants.BunnyFastCost)
         {
             ResetTempBackgroundColor();
             Vector2 location = mainCamera.ScreenToWorldPoint(Input.mousePosition);
@@ -97,7 +97,7 @@ public class DragDropBunnyFast : MonoBehaviour
                 && hits.Where(x=>x.collider.gameObject.tag == "Bunny").Count() == 1)
             {
 				//we can leave a bunny here, so decrease money and activate it
-				GameManager.Instance.AlterMoneyAvailable(-Constants.BunnyCost);
+				GameManager.Instance.AlterMoneyAvailable(-Constants.BunnyFastCost);
 				newBunny.transform.position = 
                     hits.Where(x => x.collider.gameObject.tag == "Background")
                     .First().collider.gameObject.transform.position;

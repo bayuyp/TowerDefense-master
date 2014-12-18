@@ -15,6 +15,8 @@ namespace Assets.Scripts
         public static readonly Color BlackColor = new Color(0f, 0f, 0f, 0f);
 
         public static readonly int BunnyCost = 50;
+		public static readonly int BunnyFastCost = 75;
+		public static readonly int BunnySlowCost = 100;
 
 		public static readonly float MinDistanceForBunnyToShoot = 3f;
         public static readonly int CarrotAward = 10;
