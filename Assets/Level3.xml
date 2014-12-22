@@ -35,11 +35,7 @@
     <Waypoint X="-8.11" Y="-4.09" />
   </Waypoints>
   <Rounds>
-    <Round NoOfEnemiesEasy="5" NoOfEnemiesNormal="2" NoOfEnemiesHard="0" />
-	<Round NoOfEnemiesEasy="5" NoOfEnemiesNormal="2" NoOfEnemiesHard="0" />
-	<Round NoOfEnemiesEasy="4" NoOfEnemiesNormal="3" NoOfEnemiesHard="0" />
-	<Round NoOfEnemiesEasy="4" NoOfEnemiesNormal="3" NoOfEnemiesHard="0" />
-	<Round NoOfEnemiesEasy="4" NoOfEnemiesNormal="4" NoOfEnemiesHard="0" />
+    <Round NoOfEnemiesEasy="5" NoOfEnemiesNormal="1" NoOfEnemiesHard="1" />
   </Rounds>
   <Tower X="-7.78" Y="-3.74" />
   <OtherStuff InitialMoney="100" />

@@ -44,6 +44,7 @@ namespace Assets.Scripts
             LevelStuffFromXML ls = new LevelStuffFromXML();
             //we're directly loading the level1 file, change if appropriate
             TextAsset ta = Resources.Load(StringLevel) as TextAsset;
+			//TextAsset ta = Resources.Load("Level4") as TextAsset;
             //LINQ to XML rulez!
             XDocument xdoc = XDocument.Parse(ta.text);
             XElement el = xdoc.Element("Elements");

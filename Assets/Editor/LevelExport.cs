@@ -49,7 +49,7 @@ public class LevelExport : EditorWindow
 
 		if (GUILayout.Button("Add new round"))
 		{
-			//rounds.Add(new Round(1));// { NoOfEnemiesEasy = noOfEnemiesEasy, NoOfEnemiesNormal =  noOfEnemiesNormal, NoOfEnemiesHard = noOfEnemiesHard });
+			rounds.Add(new Round() { NoOfEnemiesEasy = noOfEnemiesEasy, NoOfEnemiesNormal =  noOfEnemiesNormal, NoOfEnemiesHard = noOfEnemiesHard });
 		}
 
         initialMoney = EditorGUILayout.IntSlider("Initial Money", initialMoney, 100, 500);
