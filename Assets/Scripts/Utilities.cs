@@ -85,6 +85,8 @@ namespace Assets.Scripts
 
             XElement otherStuff = el.Element("OtherStuff");
             ls.InitialMoney = int.Parse(otherStuff.Attribute("InitialMoney").Value);
+			ls.MinCarrotSpawnTime = float.Parse(otherStuff.Attribute("MinCarrotSpawnTime").Value);
+			ls.MaxCarrotSpawnTime = float.Parse(otherStuff.Attribute("MaxCarrotSpawnTime").Value);
 
             return ls;
         }

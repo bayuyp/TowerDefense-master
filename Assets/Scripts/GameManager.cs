@@ -36,7 +36,7 @@ public class GameManager : MonoBehaviour
     //file pulled from resources
     private LevelStuffFromXML levelStuffFromXML;
     //will spawn carrots on screen
-    //public CarrotSpawner CarrotSpawner;
+    public CarrotSpawner CarrotSpawner;
 
     //helpful variables for our player
     [HideInInspector]
@@ -238,7 +238,7 @@ public class GameManager : MonoBehaviour
                 {
                     CurrentGameState = GameState.Playing;
                     StartCoroutine(NextRound());
-                    //CarrotSpawner.StartCarrotSpawning();
+                    CarrotSpawner.StartCarrotSpawning();
                 }
                 break;
             case GameState.Playing:
@@ -247,13 +247,13 @@ public class GameManager : MonoBehaviour
                     //no more rounds
                     StopCoroutine(NextRound());
                     DestroyExistingEnemiesAndCarrots();
-                    //CarrotSpawner.StopCarrotSpawning();
+                    CarrotSpawner.StopCarrotSpawning();
                     CurrentGameState = GameState.Lost;
                 }
                 else if (FinalRoundFinished && Enemies.Where(x => x != null).Count() == 0)
                 {
                     DestroyExistingEnemiesAndCarrots();
-                    //CarrotSpawner.StopCarrotSpawning();
+                    CarrotSpawner.StopCarrotSpawning();
                     CurrentGameState = GameState.Won;
                 }
                 break;

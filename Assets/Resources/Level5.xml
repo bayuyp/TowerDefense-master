@@ -46,5 +46,5 @@
 	<Round NoOfEnemiesEasy="2" NoOfEnemiesNormal="7" NoOfEnemiesHard="3" />
   </Rounds>
   <Tower X="-7.91" Y="-2.04" />
-  <OtherStuff InitialMoney="100" />
+  <OtherStuff InitialMoney ="200" MinCarrotSpawnTime="5" MaxCarrotSpawnTime="10" />
 </Elements>
