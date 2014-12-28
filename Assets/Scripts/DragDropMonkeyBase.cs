@@ -16,6 +16,7 @@ namespace Assets.Scripts
 		public void Start()
 		{
 			mainCamera = Camera.main;
+			isDragging = false;
 		}
 
 		public void Update()
@@ -24,10 +25,10 @@ namespace Assets.Scripts
 			    GameManager.Instance.MoneyAvailable >= MonkeyCost)
 			{
 				ResetTempBackgroundColor();
-				Vector2 location = mainCamera.ScreenToWorldPoint(Input.mousePosition);
+				Vector2 mousePos = mainCamera.ScreenToWorldPoint(Input.mousePosition);
 
 				if (MonkeyGenerator.GetComponent<CircleCollider2D>() !=
-				    Physics2D.OverlapPoint(location, 1 << LayerMask.NameToLayer("MonkeyGenerator")))
+				    Physics2D.OverlapPoint(mousePos, 1 << LayerMask.NameToLayer("MonkeyGenerator")))
 					return;
 
 				isDragging = true;
@@ -55,10 +56,10 @@ namespace Assets.Scripts
 
 					if (tempBackgroundBehindPath != backgroundBehindPath)
 						ResetTempBackgroundColor();
-					//cache it to revert later
+
 					tempBackgroundBehindPath = backgroundBehindPath;
 				}
-				else //just reset the color on previously set paths
+				else
 					ResetTempBackgroundColor();
 			}
 			//we're stopping dragging

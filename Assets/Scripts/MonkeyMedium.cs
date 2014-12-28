@@ -6,7 +6,9 @@ namespace Assets.Scripts
 	{
 		public new void Start()
 		{
-			ShootWaitTime = Constants.MonkeyMediumSpeed;
+			Speed = 1f;
+			Range = 100f;
+			Damage = 10;
 			base.Start();
 		}
 

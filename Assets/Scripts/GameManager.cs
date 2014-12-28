@@ -26,6 +26,9 @@ namespace Assets.Scripts
 		public SpriteRenderer MonkeyMediumGeneratorSprite;
 		public List<GameObject> Monkeys;
 		public SpriteRenderer MonkeySlowGeneratorSprite;
+		public GameObject MonkeyUpgraderDamage;
+		public GameObject MonkeyUpgraderRange;
+		public GameObject MonkeyUpgraderSpeed;
 		private GameObject pathPiecesParent;
 		public GameObject PathPrefab;
 		public GameObject TowerPrefab;
@@ -68,7 +71,6 @@ namespace Assets.Scripts
 			Enemies = new List<GameObject>();
 			pathPiecesParent = GameObject.Find("PathPieces");
 			waypointsParent = GameObject.Find("Waypoints");
-			//levelStuffFromXML = Utilities.ReadXMLFile(5);
 			levelStuffFromXML = Utilities.ReadXMLFile(gameLevel);
 
 			CreateLevelFromXML();
@@ -251,6 +253,23 @@ namespace Assets.Scripts
 						Application.LoadLevel(Application.loadedLevel);
 					break;
 			}
+		}
+
+		public void ShowMonkeyUpgrader(MonkeyBase monkey)
+		{
+			MonkeyUpgraderDamage.GetComponent<MonkeyUpgraderDamage>().MonkeyBase = monkey;
+			MonkeyUpgraderRange.GetComponent<MonkeyUpgraderRange>().MonkeyBase = monkey;
+			MonkeyUpgraderSpeed.GetComponent<MonkeyUpgraderSpeed>().MonkeyBase = monkey;
+			MonkeyUpgraderDamage.GetComponent<MonkeyUpgraderDamage>().Show();
+			MonkeyUpgraderRange.GetComponent<MonkeyUpgraderRange>().Show();
+			MonkeyUpgraderSpeed.GetComponent<MonkeyUpgraderSpeed>().Show();
+		}
+
+		public void HideMonkeyUpgrade()
+		{
+			MonkeyUpgraderDamage.GetComponent<MonkeyUpgraderDamage>().Hide();
+			MonkeyUpgraderRange.GetComponent<MonkeyUpgraderRange>().Hide();
+			MonkeyUpgraderSpeed.GetComponent<MonkeyUpgraderSpeed>().Hide();
 		}
 
 		private void DestroyExistingEnemiesAndBananas()

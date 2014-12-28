@@ -4,9 +4,9 @@
 	{
 		public new void Start()
 		{
-			Health = Constants.EnemyHardInitialHealth;
-			Bounty = Constants.EnemyHardBounty;
-			Speed = Constants.EnemyHardSpeed;
+			Health = 100;
+			Bounty = 45;
+			Speed = 2f;
 			base.Start();
 		}
 	}
