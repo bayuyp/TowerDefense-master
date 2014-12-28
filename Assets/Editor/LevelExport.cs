@@ -1,203 +1,200 @@
-﻿using UnityEngine;
-using System.Collections;
-using UnityEditor;
-using System.IO;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Xml.Linq;
 using Assets.Scripts;
-using System.Collections.Generic;
-using System.Linq;
+using UnityEditor;
+using UnityEngine;
 
-public class LevelExport : EditorWindow
+namespace Assets.Editor
 {
-    [MenuItem("Custom Editor/Export Level")]
-    public static void ShowWindow()
-    {
-        EditorWindow.GetWindow(typeof(LevelExport));
-    }
+	public class LevelExport : EditorWindow
+	{
+		private readonly List<Round> rounds = new List<Round>();
+		private XDocument doc;
+		private string filename = "LevelX.xml";
+		private int initialMoney;
+		private int noOfEnemiesEasy;
+		private int noOfEnemiesHard;
+		private int noOfEnemiesNormal;
+		private int pathsCount;
+		private Vector2 scrollPosition = Vector2.zero;
+		private int waypointsCount;
 
-    Vector2 scrollPosition = Vector2.zero;
-    int noOfEnemiesEasy;
-	int noOfEnemiesNormal;
-	int noOfEnemiesHard;
-    int initialMoney;
-    string filename = "LevelX.xml";
-    int waypointsCount;
-    int pathsCount;
-    void OnGUI()
-    {
-        scrollPosition = EditorGUILayout.BeginScrollView(scrollPosition);
-        EditorGUILayout.LabelField("Total Rounds created:" + rounds.Count);
-        for (int i = 0; i < rounds.Count; i++)
-        {
-            EditorGUILayout.BeginHorizontal();
-            EditorGUILayout.LabelField("Round " + (i + 1));
-            EditorGUILayout.LabelField("Easy:" + rounds[i].NoOfEnemiesEasy);
-			EditorGUILayout.LabelField("Normal:" + rounds[i].NoOfEnemiesNormal);
-			EditorGUILayout.LabelField("Hard:" + rounds[i].NoOfEnemiesHard);
-            if (GUILayout.Button("Delete"))
-            {
-                rounds.RemoveAt(i);
-            }
-            EditorGUILayout.EndHorizontal();
-        }
-        EditorGUILayout.EndScrollView();
-
-        EditorGUILayout.LabelField("Add a new round", EditorStyles.boldLabel);
-        noOfEnemiesEasy = EditorGUILayout.IntSlider("Enemies Easy", noOfEnemiesEasy, 1, 20);
-		noOfEnemiesNormal = EditorGUILayout.IntSlider("Enemies Normal", noOfEnemiesNormal, 1, 20);
-		noOfEnemiesHard = EditorGUILayout.IntSlider("Enemies Hard", noOfEnemiesHard, 1, 20);
-
-		if (GUILayout.Button("Add new round"))
+		[MenuItem("Custom Editor/Export Level")]
+		public static void ShowWindow()
 		{
-			rounds.Add(new Round() { NoOfEnemiesEasy = noOfEnemiesEasy, NoOfEnemiesNormal =  noOfEnemiesNormal, NoOfEnemiesHard = noOfEnemiesHard });
+			GetWindow(typeof (LevelExport));
 		}
 
-        initialMoney = EditorGUILayout.IntSlider("Initial Money", initialMoney, 100, 500);
-		//MinCarrotSpawnTime = EditorGUILayout.IntSlider("MinCarrotSpawnTime", MinCarrotSpawnTime, 1, 10);
-		//MaxCarrotSpawnTime = EditorGUILayout.IntSlider("MaxCarrotSpawnTime", MaxCarrotSpawnTime, 1, 10);
+		public void OnGUI()
+		{
+			scrollPosition = EditorGUILayout.BeginScrollView(scrollPosition);
+			EditorGUILayout.LabelField("Total Rounds created:" + rounds.Count);
+			for (var i = 0; i < rounds.Count; i++)
+			{
+				EditorGUILayout.BeginHorizontal();
+				EditorGUILayout.LabelField("Round " + (i + 1));
+				EditorGUILayout.LabelField("Easy:" + rounds[i].NoOfEnemiesEasy);
+				EditorGUILayout.LabelField("Normal:" + rounds[i].NoOfEnemiesNormal);
+				EditorGUILayout.LabelField("Hard:" + rounds[i].NoOfEnemiesHard);
+				if (GUILayout.Button("Delete"))
+					rounds.RemoveAt(i);
+				EditorGUILayout.EndHorizontal();
+			}
+			EditorGUILayout.EndScrollView();
 
-        filename = EditorGUILayout.TextField("Filename:", filename);
-        EditorGUILayout.LabelField("Export Level", EditorStyles.boldLabel);
-        if (GUILayout.Button("Export"))
-        {
-            Export();
-        }
-    }
+			EditorGUILayout.LabelField("Add a new round", EditorStyles.boldLabel);
+			noOfEnemiesEasy = EditorGUILayout.IntSlider("Enemies Easy", noOfEnemiesEasy, 1, 20);
+			noOfEnemiesNormal = EditorGUILayout.IntSlider("Enemies Normal", noOfEnemiesNormal, 1, 20);
+			noOfEnemiesHard = EditorGUILayout.IntSlider("Enemies Hard", noOfEnemiesHard, 1, 20);
 
-    XDocument doc;
-    
-	List<Round> rounds = new List<Round>();
+			if (GUILayout.Button("Add new round"))
+				rounds.Add(new Round
+				{
+					NoOfEnemiesEasy = noOfEnemiesEasy,
+					NoOfEnemiesNormal = noOfEnemiesNormal,
+					NoOfEnemiesHard = noOfEnemiesHard
+				});
 
-    // The export method
-    void Export()
-    {
-        // Create a new output file stream
-        doc = new XDocument();
-        doc.Add(new XElement("Elements"));
-        XElement elements = doc.Element("Elements");
+			initialMoney = EditorGUILayout.IntSlider("Initial Money", initialMoney, 100, 500);
+			//MinBananaSpawnTime = EditorGUILayout.IntSlider("MinBananaSpawnTime", MinBananaSpawnTime, 1, 10);
+			//MaxBananaSpawnTime = EditorGUILayout.IntSlider("MaxBananaSpawnTime", MaxBananaSpawnTime, 1, 10);
 
-        XElement pathPiecesXML = new XElement("PathPieces");
-        var paths = GameObject.FindGameObjectsWithTag("Path");
-       
-        foreach (var item in paths)
-        {
-            XElement path = new XElement("Path");
-            XAttribute attrX = new XAttribute("X", item.transform.position.x);
-            XAttribute attrY = new XAttribute("Y", item.transform.position.y);
-            path.Add(attrX, attrY);
-            pathPiecesXML.Add(path);
-        }
-        pathsCount = paths.Length;
-        elements.Add(pathPiecesXML);
+			filename = EditorGUILayout.TextField("Filename:", filename);
+			EditorGUILayout.LabelField("Export Level", EditorStyles.boldLabel);
+			if (GUILayout.Button("Export"))
+				Export();
+		}
 
-        XElement waypointsXML = new XElement("Waypoints");
-        var waypoints = GameObject.FindGameObjectsWithTag("Waypoint");
-        if (!WaypointsAreValid(waypoints))
-        {
-            return;
-        }
-        //order by user selected order
-        waypoints = waypoints.OrderBy(x => x.GetComponent<OrderedWaypointForEditor>().Order).ToArray();
-        foreach (var item in waypoints)
-        {
-            XElement waypoint = new XElement("Waypoint");
-            XAttribute attrX = new XAttribute("X", item.transform.position.x);
-            XAttribute attrY = new XAttribute("Y", item.transform.position.y);
-            waypoint.Add(attrX, attrY);
-            waypointsXML.Add(waypoint);
-        }
-        waypointsCount = waypoints.Length;
-        elements.Add(waypointsXML);
+		// The export method
+		private void Export()
+		{
+			// Create a new output file stream
+			doc = new XDocument();
+			doc.Add(new XElement("Elements"));
+			var elements = doc.Element("Elements");
 
-        XElement roundsXML = new XElement("Rounds");
-        foreach (var item in rounds)
-        {
-            XElement round = new XElement("Round");
-            XAttribute NoOfEnemiesEasy = new XAttribute("NoOfEnemiesEasy", item.NoOfEnemiesEasy);
-			XAttribute NoOfEnemiesNormal = new XAttribute("NoOfEnemiesNormal", item.NoOfEnemiesNormal);
-			XAttribute NoOfEnemiesHard = new XAttribute("NoOfEnemiesHard", item.NoOfEnemiesHard);
-            round.Add(NoOfEnemiesEasy);
-			round.Add(NoOfEnemiesNormal);
-			round.Add(NoOfEnemiesHard);
-            roundsXML.Add(round);
-        }
-        elements.Add(roundsXML);
+			var pathPiecesXML = new XElement("PathPieces");
+			var paths = GameObject.FindGameObjectsWithTag("Path");
 
-        XElement towerXML = new XElement("Tower");
-        var tower = GameObject.FindGameObjectWithTag("Tower");
-        if(tower == null)
-        {
-            ShowErrorForNull("Tower");
-            return;
-        }
-        XAttribute towerX = new XAttribute("X", tower.transform.position.x);
-        XAttribute towerY = new XAttribute("Y", tower.transform.position.y);
-        towerXML.Add(towerX, towerY);
-        elements.Add(towerXML);
+			foreach (var item in paths)
+			{
+				var path = new XElement("Path");
+				var attrX = new XAttribute("X", item.transform.position.x);
+				var attrY = new XAttribute("Y", item.transform.position.y);
+				path.Add(attrX, attrY);
+				pathPiecesXML.Add(path);
+			}
+			pathsCount = paths.Length;
+			if (elements != null)
+			{
+				elements.Add(pathPiecesXML);
 
-        XElement otherStuffXML = new XElement("OtherStuff");
-        otherStuffXML.Add(new XAttribute("InitialMoney", initialMoney));
-        elements.Add(otherStuffXML);
+				var waypointsXML = new XElement("Waypoints");
+				var waypoints = GameObject.FindGameObjectsWithTag("Waypoint");
+				if (!WaypointsAreValid(waypoints))
+					return;
+				//order by user selected order
+				waypoints = waypoints.OrderBy(x => x.GetComponent<OrderedWaypointForEditor>().Order).ToArray();
+				foreach (var item in waypoints)
+				{
+					var waypoint = new XElement("Waypoint");
+					var attrX = new XAttribute("X", item.transform.position.x);
+					var attrY = new XAttribute("Y", item.transform.position.y);
+					waypoint.Add(attrX, attrY);
+					waypointsXML.Add(waypoint);
+				}
+				waypointsCount = waypoints.Length;
+				elements.Add(waypointsXML);
 
-        if (!InputIsValid())
-            return;
+				var roundsXML = new XElement("Rounds");
+				foreach (var item in rounds)
+				{
+					var round = new XElement("Round");
+					var NoOfEnemiesEasy = new XAttribute("NoOfEnemiesEasy", item.NoOfEnemiesEasy);
+					var NoOfEnemiesNormal = new XAttribute("NoOfEnemiesNormal", item.NoOfEnemiesNormal);
+					var NoOfEnemiesHard = new XAttribute("NoOfEnemiesHard", item.NoOfEnemiesHard);
+					round.Add(NoOfEnemiesEasy);
+					round.Add(NoOfEnemiesNormal);
+					round.Add(NoOfEnemiesHard);
+					roundsXML.Add(round);
+				}
+				elements.Add(roundsXML);
 
-        if (EditorUtility.DisplayDialog("Save confirmation",
-            "Are you sure you want to save level " + filename +"?", "OK", "Cancel"))
-        {
-            doc.Save("Assets/" + filename);
-            EditorUtility.DisplayDialog("Saved", filename + " saved!", "OK");
-        }
-        else
-        {
-            EditorUtility.DisplayDialog("NOT Saved", filename + " not saved!", "OK");
-        }
-    }
+				var towerXML = new XElement("Tower");
+				var tower = GameObject.FindGameObjectWithTag("Tower");
+				if (tower == null)
+				{
+					ShowErrorForNull("Tower");
+					return;
+				}
+				var towerX = new XAttribute("X", tower.transform.position.x);
+				var towerY = new XAttribute("Y", tower.transform.position.y);
+				towerXML.Add(towerX, towerY);
+				elements.Add(towerXML);
 
-    private bool WaypointsAreValid(GameObject[] waypoints)
-    {
-        //first check whether whey all have a OrderedWaypoint component
-        if (!waypoints.All(x => x.GetComponent<OrderedWaypointForEditor>() != null))
-        {
-            EditorUtility.DisplayDialog("Error", "All waypoints must have an ordered waypoint component", "OK");
-            return false;
-        }
-        //check if all Order fields on the orderwaypoint components are different
+				var otherStuffXML = new XElement("OtherStuff");
+				otherStuffXML.Add(new XAttribute("InitialMoney", initialMoney));
+				elements.Add(otherStuffXML);
+			}
 
-        if (waypoints.Count() != waypoints.Select(x=>x.GetComponent<OrderedWaypointForEditor>().Order).Distinct().Count())
-        {
-            EditorUtility.DisplayDialog("Error", "All waypoints must have a different order", "OK");
-            return false;
-        }
-        return true;
-    }
+			if (!InputIsValid())
+				return;
 
-    private void ShowErrorForNull(string gameObjectName)
-    {
-        EditorUtility.DisplayDialog("Error", "Cannot find gameobject " + gameObjectName, "OK");
-    }
+			if (EditorUtility.DisplayDialog("Save confirmation",
+				"Are you sure you want to save level " + filename + "?", "OK", "Cancel"))
+			{
+				doc.Save("Assets/" + filename);
+				EditorUtility.DisplayDialog("Saved", filename + " saved!", "OK");
+			}
+			else
+				EditorUtility.DisplayDialog("NOT Saved", filename + " not saved!", "OK");
+		}
 
-    private bool InputIsValid()
-    {
-        if (rounds.Count == 0)
-        {
-            EditorUtility.DisplayDialog("Error", "You cannot have 0 rounds", "OK");
-            return false;
-        }
+		private bool WaypointsAreValid(GameObject[] waypoints)
+		{
+			//first check whether whey all have a OrderedWaypoint component
+			if (waypoints.Any(x => x.GetComponent<OrderedWaypointForEditor>() == null))
+			{
+				EditorUtility.DisplayDialog("Error", "All waypoints must have an ordered waypoint component", "OK");
+				return false;
+			}
+			//check if all Order fields on the orderwaypoint components are different
 
-        if (waypointsCount == 0)
-        {
-            EditorUtility.DisplayDialog("Error", "You cannot have 0 waypoints", "OK");
-            return false;
-        }
+			if (waypoints.Count() != waypoints.Select(x => x.GetComponent<OrderedWaypointForEditor>().Order).Distinct().Count())
+			{
+				EditorUtility.DisplayDialog("Error", "All waypoints must have a different order", "OK");
+				return false;
+			}
+			return true;
+		}
 
-        if (pathsCount == 0)
-        {
-            EditorUtility.DisplayDialog("Error", "You cannot have 0 paths", "OK");
-            return false;
-        }
+		private void ShowErrorForNull(string gameObjectName)
+		{
+			EditorUtility.DisplayDialog("Error", "Cannot find gameobject " + gameObjectName, "OK");
+		}
 
-        return true;
-    }
+		private bool InputIsValid()
+		{
+			if (rounds.Count == 0)
+			{
+				EditorUtility.DisplayDialog("Error", "You cannot have 0 rounds", "OK");
+				return false;
+			}
 
+			if (waypointsCount == 0)
+			{
+				EditorUtility.DisplayDialog("Error", "You cannot have 0 waypoints", "OK");
+				return false;
+			}
+
+			if (pathsCount == 0)
+			{
+				EditorUtility.DisplayDialog("Error", "You cannot have 0 paths", "OK");
+				return false;
+			}
+
+			return true;
+		}
+	}
 }

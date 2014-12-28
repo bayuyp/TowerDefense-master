@@ -1,16 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace Assets.Scripts
+﻿namespace Assets.Scripts
 {
-    public enum BunnyState
-    {
-        Inactive,
-        Searching,
-        Targeting
-    }
+	public enum MonkeyState
+	{
+		Inactive,
+		Searching,
+		Targeting
+	}
 
 	public enum EnemyState
 	{
@@ -19,11 +14,11 @@ namespace Assets.Scripts
 		Targeting
 	}
 
-    public enum GameState
-    {
-        Start,
-        Playing,
-        Won,
-        Lost
-    }
+	public enum GameState
+	{
+		Start,
+		Playing,
+		Won,
+		Lost
+	}
 }

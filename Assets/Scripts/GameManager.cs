@@ -1,343 +1,292 @@
-﻿using UnityEngine;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Assets.Scripts;
-using System.Collections;
-using System;
+using UnityEngine;
 
-public class GameManager : MonoBehaviour
+namespace Assets.Scripts
 {
-    //basic singleton implementation
-    [HideInInspector]
-    public static GameManager Instance { get; private set; }
+	public class GameManager : MonoBehaviour
+	{
+		private readonly object lockerObject = new object();
+		public BananaSpawner BananaSpawner;
+		[HideInInspector] public GameState CurrentGameState;
+		private int currentRoundIndex;
+		public List<GameObject> Enemies;
+		public GameObject EnemyEasyPrefab;
+		public GameObject EnemyHardPrefab;
+		public GameObject EnemyNormalPrefab;
+		[HideInInspector] public bool FinalRoundFinished;
+		public GUIText InfoText;
+		private LevelStuffFromXML levelStuffFromXML;
+		public int Lives = 10;
+		[HideInInspector] public float MaxBananaSpawnTime;
+		[HideInInspector] public float MinBananaSpawnTime;
+		public SpriteRenderer MonkeyFastGeneratorSprite;
+		public SpriteRenderer MonkeyMediumGeneratorSprite;
+		public List<GameObject> Monkeys;
+		public SpriteRenderer MonkeySlowGeneratorSprite;
+		private GameObject pathPiecesParent;
+		public GameObject PathPrefab;
+		public GameObject TowerPrefab;
+		public Transform[] Waypoints;
+		private GameObject waypointsParent;
 
-    void Awake()
-    {
-        Instance = this;
-    }
+		[HideInInspector]
+		public static GameManager Instance { get; private set; }
 
-    //sprites can be found here: 
-    //http://www.gameartguppy.com/shop/top-tower-defense-bunny-badgers-game-art-set/
+		[HideInInspector]
+		public int MoneyAvailable { get; private set; }
 
-    //enemies on screen
-    public List<GameObject> Enemies;
-	public List<GameObject> Bunnies;
-    //prefabs
-    //public GameObject EnemyPrefab;
-	public GameObject EnemyEasyPrefab;
-	public GameObject EnemyNormalPrefab;
-	public GameObject EnemyHardPrefab;
-    public GameObject PathPrefab;
-    public GameObject TowerPrefab;
-    //list of waypoints in the current level
-    public Transform[] Waypoints;
-    private GameObject PathPiecesParent;
-    private GameObject WaypointsParent;
-    //file pulled from resources
-    private LevelStuffFromXML levelStuffFromXML;
-    //will spawn carrots on screen
-    public CarrotSpawner CarrotSpawner;
+		public void AlterMoneyAvailable(int money)
+		{
+			MoneyAvailable += money;
 
-    //helpful variables for our player
-    [HideInInspector]
-    public int MoneyAvailable { get; private set; }
-    [HideInInspector]
-    public float MinCarrotSpawnTime;
-    [HideInInspector]
-    public float MaxCarrotSpawnTime;
-    public int Lives = 10;
-    private int currentRoundIndex = 0;
-    [HideInInspector]
-    public GameState CurrentGameState;
-    public SpriteRenderer BunnyGeneratorSprite;
-    [HideInInspector]
-    public bool FinalRoundFinished;
-    public GUIText infoText;
-	//public int gameLevel = 5;
+			var medium = MonkeyMediumGeneratorSprite.color;
+			var fast = MonkeyFastGeneratorSprite.color;
+			var slow = MonkeySlowGeneratorSprite.color;
 
-    private object lockerObject = new object();
+			medium.a = MoneyAvailable < Constants.MonkeyMediumCost ? 0.3f : 1.0f;
+			fast.a = MoneyAvailable < Constants.MonkeyFastCost ? 0.3f : 1.0f;
+			slow.a = MoneyAvailable < Constants.MonkeySlowCost ? 0.3f : 1.0f;
 
-    // Use this for initialization
-    void Start()
-    {
-		int gameLevel = 5;
-        IgnoreLayerCollisions();
-
-        Enemies = new List<GameObject>();
-        PathPiecesParent = GameObject.Find("PathPieces");
-        WaypointsParent = GameObject.Find("Waypoints");
-        //levelStuffFromXML = Utilities.ReadXMLFile(5);
-		levelStuffFromXML = Utilities.ReadXMLFile(gameLevel);
-
-        CreateLevelFromXML();
-
-        CurrentGameState = GameState.Start;
-
-        FinalRoundFinished = false;
-    }
-
-    /// <summary>
-    /// Will create necessary stuff from the object that has the XML stuff
-    /// </summary>
-    private void CreateLevelFromXML()
-    {
-        foreach (var position in levelStuffFromXML.Paths)
-        {
-            GameObject go = Instantiate(PathPrefab, position, 
-                Quaternion.identity) as GameObject;
-            go.GetComponent<SpriteRenderer>().sortingLayerName = "Path";
-            go.transform.parent = PathPiecesParent.transform;
-        }
-
-        for (int i = 0; i < levelStuffFromXML.Waypoints.Count; i++)
-        {
-            GameObject go = new GameObject();
-            go.transform.position = levelStuffFromXML.Waypoints[i];
-            go.transform.parent = WaypointsParent.transform;
-            go.tag = "Waypoint";
-            go.name = "Waypoints" + i.ToString();
-        }
-
-        GameObject tower = Instantiate(TowerPrefab, levelStuffFromXML.Tower,
-            Quaternion.identity) as GameObject;
-        tower.GetComponent<SpriteRenderer>().sortingLayerName = "Foreground";
-
-        Waypoints = GameObject.FindGameObjectsWithTag("Waypoint")
-            .OrderBy(x => x.name).Select(x => x.transform).ToArray();
-
-        MoneyAvailable = levelStuffFromXML.InitialMoney;
-        MinCarrotSpawnTime = levelStuffFromXML.MinCarrotSpawnTime;
-        MaxCarrotSpawnTime = levelStuffFromXML.MaxCarrotSpawnTime;
-    }
-
-    /// <summary>
-    /// Will make the arrow collide only with enemies!
-    /// </summary>
-    private void IgnoreLayerCollisions()
-    {
-        int bunnyLayerID = LayerMask.NameToLayer("Bunny");
-        int enemyLayerID = LayerMask.NameToLayer("Enemy");
-        int arrowLayerID = LayerMask.NameToLayer("Arrow");
-        int bunnyGeneratorLayerID = LayerMask.NameToLayer("BunnyGenerator");
-        int backgroundLayerID = LayerMask.NameToLayer("Background");
-        int pathLayerID = LayerMask.NameToLayer("Path");
-        int towerLayerID = LayerMask.NameToLayer("Tower");
-        int carrotLayerID = LayerMask.NameToLayer("Carrot");
-        Physics2D.IgnoreLayerCollision(bunnyLayerID, enemyLayerID); //Bunny and Enemy (when dragging the bunny)
-        Physics2D.IgnoreLayerCollision(arrowLayerID, bunnyGeneratorLayerID); //Arrow and BunnyGenerator
-        Physics2D.IgnoreLayerCollision(arrowLayerID, backgroundLayerID); //Arrow and Background
-        Physics2D.IgnoreLayerCollision(arrowLayerID, pathLayerID); //Arrow and Path
-        Physics2D.IgnoreLayerCollision(arrowLayerID, bunnyLayerID); //Arrow and Bunny
-        Physics2D.IgnoreLayerCollision(arrowLayerID, towerLayerID); //Arrow and Tower
-        Physics2D.IgnoreLayerCollision(arrowLayerID, carrotLayerID); //Arrow and Carrot
-    }
-
-
-
-    IEnumerator NextRound()
-    {
-        //give the player 2 secs to do stuff
-        yield return new WaitForSeconds(2f);
-        //get a reference to the next round details
-        Round currentRound = levelStuffFromXML.Rounds[currentRoundIndex];
-
-
-		/*for (int i = 0; i <  currentRound.NoOfEnemies; i++)
-		{//spawn a new enemy
-			GameObject enemy = Instantiate(EnemyPrefab, Waypoints[0].position, Quaternion.identity) as GameObject;
-			Enemy enemyComponent = enemy.GetComponent<Enemy>();
-			//set speed and enemyKilled handler
-			enemyComponent.Speed += Mathf.Clamp(currentRoundIndex, 1f, 5f);
-			enemyComponent.EnemyKilled += OnEnemyKilled;
-			//add it to the list and wait till you spawn the next one
-			Enemies.Add(enemy);
-			yield return new WaitForSeconds(1f / (currentRoundIndex == 0 ? 1 : currentRoundIndex));
-		}*/
-
-        for (int i = 0; i < currentRound.NoOfEnemiesEasy; i++)
-        {//spawn a new enemy
-            GameObject enemy = Instantiate(EnemyEasyPrefab, Waypoints[0].position, Quaternion.identity) as GameObject;
-            EnemyEasy enemyComponent = enemy.GetComponent<EnemyEasy>();
-            //set speed and enemyKilled handler
-            enemyComponent.Speed += Mathf.Clamp(currentRoundIndex, 1f, 5f);
-            enemyComponent.EnemyKilled += OnEnemyKilled;
-            //add it to the list and wait till you spawn the next one
-            Enemies.Add(enemy);
-            yield return new WaitForSeconds(1f / (currentRoundIndex == 0 ? 1 : currentRoundIndex));
-        }
-		for (int i = 0; i < currentRound.NoOfEnemiesNormal; i++)
-		{//spawn a new enemy
-			GameObject enemy = Instantiate(EnemyNormalPrefab, Waypoints[0].position, Quaternion.identity) as GameObject;
-			EnemyNormal enemyComponent = enemy.GetComponent<EnemyNormal>();
-			//set speed and enemyKilled handler
-			enemyComponent.Speed += Mathf.Clamp(currentRoundIndex, 1f, 5f);
-			enemyComponent.EnemyKilled += OnEnemyKilled;
-			//add it to the list and wait till you spawn the next one
-			Enemies.Add(enemy);
-			yield return new WaitForSeconds(1f / (currentRoundIndex == 0 ? 1 : currentRoundIndex));
-		}
-		for (int i = 0; i < currentRound.NoOfEnemiesHard; i++)
-		{//spawn a new enemy
-			GameObject enemy = Instantiate(EnemyHardPrefab, Waypoints[0].position, Quaternion.identity) as GameObject;
-			EnemyHard enemyComponent = enemy.GetComponent<EnemyHard>();
-			//set speed and enemyKilled handler
-			enemyComponent.Speed += Mathf.Clamp(currentRoundIndex, 1f, 5f);
-			enemyComponent.EnemyKilled += OnEnemyKilled;
-			//add it to the list and wait till you spawn the next one
-			Enemies.Add(enemy);
-			yield return new WaitForSeconds(1f / (currentRoundIndex == 0 ? 1 : currentRoundIndex));
+			MonkeyMediumGeneratorSprite.color = medium;
+			MonkeyFastGeneratorSprite.color = fast;
+			MonkeySlowGeneratorSprite.color = slow;
 		}
 
-    }
+		public void Awake()
+		{
+			Instance = this;
+		}
 
-    /// <summary>
-    /// Handler for the enemy killed event
-    /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="e"></param>
-    void OnEnemyKilled(object sender, EventArgs e)
-    {
-        bool startNewRound = false;
-        //explicit lock, since this may occur any time by any enemy
-        //not 100% that this is needed, but better safe than sorry!
-        lock (lockerObject)
-        {
-            if (Enemies.Where(x => x != null).Count() == 0 && CurrentGameState == GameState.Playing)
-            {
-                startNewRound = true;
-            }
-        }
-        if (startNewRound)
-            CheckAndStartNewRound();
-    }
+		public void Start()
+		{
+			const int gameLevel = 5;
+			IgnoreLayerCollisions();
 
-    /// <summary>
-    /// Starts a new round (if available) and sets the FinalRound flag
-    /// </summary>
-    private void CheckAndStartNewRound()
-    {
-        if (currentRoundIndex < levelStuffFromXML.Rounds.Count - 1)
-        {
-            currentRoundIndex++;
-            StartCoroutine(NextRound());
-        }
-        else
-        {
-            FinalRoundFinished = true;
-        }
-    }
+			Enemies = new List<GameObject>();
+			pathPiecesParent = GameObject.Find("PathPieces");
+			waypointsParent = GameObject.Find("Waypoints");
+			//levelStuffFromXML = Utilities.ReadXMLFile(5);
+			levelStuffFromXML = Utilities.ReadXMLFile(gameLevel);
 
-    // Update is called once per frame
-    void Update()
-    {
-        switch (CurrentGameState)
-        {
-            //start state, on tap, start the game and spawn carrots!
-            case GameState.Start:
-                if (Input.GetMouseButtonUp(0))
-                {
-                    CurrentGameState = GameState.Playing;
-                    StartCoroutine(NextRound());
-                    CarrotSpawner.StartCarrotSpawning();
-                }
-                break;
-            case GameState.Playing:
-                if (Lives == 0) //we lost
-                {
-                    //no more rounds
-                    StopCoroutine(NextRound());
-                    DestroyExistingEnemiesAndCarrots();
-                    CarrotSpawner.StopCarrotSpawning();
-                    CurrentGameState = GameState.Lost;
-                }
-                else if (FinalRoundFinished && Enemies.Where(x => x != null).Count() == 0)
-                {
-                    DestroyExistingEnemiesAndCarrots();
-                    CarrotSpawner.StopCarrotSpawning();
-                    CurrentGameState = GameState.Won;
-                }
-                break;
-            case GameState.Won:
-                if (Input.GetMouseButtonUp(0))
-                {//restart
-                    Application.LoadLevel(Application.loadedLevel);
-                }
-                break;
-            case GameState.Lost:
-                if (Input.GetMouseButtonUp(0))
-                {//restart
-                    Application.LoadLevel(Application.loadedLevel);
-                }
-                break;
-            default:
-                break;
-        }
-    }
+			CreateLevelFromXML();
 
-    private void DestroyExistingEnemiesAndCarrots()
-    {
-        //get all the enemies
-        foreach (var item in Enemies)
-        {
-            if (item != null)
-                Destroy(item.gameObject);
-        }
-        //get all the carrots
-        var carrots = GameObject.FindGameObjectsWithTag("Carrot");
-        foreach (var item in carrots)
-        {
-            Destroy(item);
-        }
-    }
+			CurrentGameState = GameState.Start;
 
-    /// <summary>
-    /// Increase or decrease money available
-    /// </summary>
-    /// <param name="money"></param>
-    public void AlterMoneyAvailable(int money)
-    {
-        MoneyAvailable += money;
-        //we're also modifying the BunnyGenerator alpha color
-        //yeah, I know, I could use an event for that, next time!
-        if (MoneyAvailable < Constants.BunnyCost)
-        {
-            Color temp = BunnyGeneratorSprite.color;
-            temp.a = 0.3f;
-            BunnyGeneratorSprite.color = temp;
-        }
-        else
-        {
-            Color temp = BunnyGeneratorSprite.color;
-            temp.a = 1.0f;
-            BunnyGeneratorSprite.color = temp;
-        }
-    }
+			FinalRoundFinished = false;
+		}
 
-    /// <summary>
-    /// Show GUI stuff with the deprecated way
-    /// Long live Unity 4.6!
-    /// </summary>
-    void OnGUI()
-    {
-        Utilities.AutoResize(800, 480);
-        switch (CurrentGameState)
-        {
-            case GameState.Start:
-                infoText.text = "Tap to start!";
-                break;
-            case GameState.Playing:
-                infoText.text = "Money: " + MoneyAvailable.ToString() + "\n"
-                    + "Life: " + Lives.ToString() + "\n" +
-                    string.Format("round {0} of {1}", currentRoundIndex + 1, levelStuffFromXML.Rounds.Count);
-                break;
-            case GameState.Won:
-                infoText.text = "Won! Tap to restart!";
-                break;
-            case GameState.Lost:
-                infoText.text = "Lost :( Tap to restart!";
-                break;
-            default:
-                break;
-        }
-    }
+		private void CreateLevelFromXML()
+		{
+			foreach (var go in levelStuffFromXML.Paths.Select(position => Instantiate(PathPrefab, position,
+				Quaternion.identity) as GameObject))
+			{
+				go.GetComponent<SpriteRenderer>().sortingLayerName = "Path";
+				go.transform.parent = pathPiecesParent.transform;
+			}
+
+			for (var i = 0; i < levelStuffFromXML.Waypoints.Count; i++)
+			{
+				var go = new GameObject();
+				go.transform.position = levelStuffFromXML.Waypoints[i];
+				go.transform.parent = waypointsParent.transform;
+				go.tag = "Waypoint";
+				go.name = "Waypoints" + i;
+			}
+
+			var tower = Instantiate(TowerPrefab, levelStuffFromXML.Tower,
+				Quaternion.identity) as GameObject;
+			if (tower != null)
+				tower.GetComponent<SpriteRenderer>().sortingLayerName = "Foreground";
+
+			Waypoints = GameObject.FindGameObjectsWithTag("Waypoint")
+				.OrderBy(x => x.name).Select(x => x.transform).ToArray();
+
+			MoneyAvailable = levelStuffFromXML.InitialMoney;
+			MinBananaSpawnTime = levelStuffFromXML.MinBananaSpawnTime;
+			MaxBananaSpawnTime = levelStuffFromXML.MaxBananaSpawnTime;
+		}
+
+		private static void IgnoreLayerCollisions()
+		{
+			var monkeyLayerId = LayerMask.NameToLayer("Monkey");
+			var enemyLayerId = LayerMask.NameToLayer("Enemy");
+			var arrowLayerId = LayerMask.NameToLayer("Arrow");
+			var monkeyGeneratorLayerId = LayerMask.NameToLayer("MonkeyGenerator");
+			var backgroundLayerId = LayerMask.NameToLayer("Background");
+			var pathLayerId = LayerMask.NameToLayer("Path");
+			var towerLayerId = LayerMask.NameToLayer("Tower");
+			var bananaLayerId = LayerMask.NameToLayer("Banana");
+			Console.WriteLine(monkeyLayerId);
+			Physics2D.IgnoreLayerCollision(monkeyLayerId, enemyLayerId); //MonkeyMedium and Enemy (when dragging the bunny)
+			Physics2D.IgnoreLayerCollision(arrowLayerId, monkeyGeneratorLayerId); //Arrow and MonkeyGenerator
+			Physics2D.IgnoreLayerCollision(arrowLayerId, backgroundLayerId); //Arrow and Background
+			Physics2D.IgnoreLayerCollision(arrowLayerId, pathLayerId); //Arrow and Path
+			Physics2D.IgnoreLayerCollision(arrowLayerId, monkeyLayerId); //Arrow and MonkeyMedium
+			Physics2D.IgnoreLayerCollision(arrowLayerId, towerLayerId); //Arrow and Tower
+			Physics2D.IgnoreLayerCollision(arrowLayerId, bananaLayerId); //Arrow and Banana
+		}
+
+		private IEnumerator NextRound()
+		{
+			//give the player 2 secs to do stuff
+			yield return new WaitForSeconds(2f);
+			//get a reference to the next round details
+			var currentRound = levelStuffFromXML.Rounds[currentRoundIndex];
+
+			for (var i = 0; i < currentRound.NoOfEnemiesEasy; i++)
+			{
+				//spawn a new enemy
+				var enemy = Instantiate(EnemyEasyPrefab, Waypoints[0].position, Quaternion.identity) as GameObject;
+				if (enemy != null)
+				{
+					var enemyComponent = enemy.GetComponent<EnemyEasy>();
+					//set speed and enemyKilled handler
+					enemyComponent.Speed += Mathf.Clamp(currentRoundIndex, 1f, 5f);
+					enemyComponent.EnemyKilled += OnEnemyKilled;
+				}
+				//add it to the list and wait till you spawn the next one
+				Enemies.Add(enemy);
+				yield return new WaitForSeconds(1f/(currentRoundIndex == 0 ? 1 : currentRoundIndex));
+			}
+			for (var i = 0; i < currentRound.NoOfEnemiesNormal; i++)
+			{
+				//spawn a new enemy
+				var enemy = Instantiate(EnemyNormalPrefab, Waypoints[0].position, Quaternion.identity) as GameObject;
+				if (enemy != null)
+				{
+					var enemyComponent = enemy.GetComponent<EnemyNormal>();
+					//set speed and enemyKilled handler
+					enemyComponent.Speed += Mathf.Clamp(currentRoundIndex, 1f, 5f);
+					enemyComponent.EnemyKilled += OnEnemyKilled;
+				}
+				//add it to the list and wait till you spawn the next one
+				Enemies.Add(enemy);
+				yield return new WaitForSeconds(1f/(currentRoundIndex == 0 ? 1 : currentRoundIndex));
+			}
+			for (var i = 0; i < currentRound.NoOfEnemiesHard; i++)
+			{
+//spawn a new enemy
+				var enemy = Instantiate(EnemyHardPrefab, Waypoints[0].position, Quaternion.identity) as GameObject;
+				if (enemy != null)
+				{
+					var enemyComponent = enemy.GetComponent<EnemyHard>();
+					//set speed and enemyKilled handler
+					enemyComponent.Speed += Mathf.Clamp(currentRoundIndex, 1f, 5f);
+					enemyComponent.EnemyKilled += OnEnemyKilled;
+				}
+				//add it to the list and wait till you spawn the next one
+				Enemies.Add(enemy);
+				yield return new WaitForSeconds(1f/(currentRoundIndex == 0 ? 1 : currentRoundIndex));
+			}
+		}
+
+		private void OnEnemyKilled(object sender, EventArgs e)
+		{
+			var startNewRound = false;
+			//explicit lock, since this may occur any time by any enemy
+			//not 100% that this is needed, but better safe than sorry!
+			lock (lockerObject)
+			{
+				if (Enemies.Count(x => x != null) == 0 && CurrentGameState == GameState.Playing)
+					startNewRound = true;
+			}
+			if (startNewRound)
+				CheckAndStartNewRound();
+		}
+
+		private void CheckAndStartNewRound()
+		{
+			if (currentRoundIndex < levelStuffFromXML.Rounds.Count - 1)
+			{
+				currentRoundIndex++;
+				StartCoroutine(NextRound());
+			}
+			else
+				FinalRoundFinished = true;
+		}
+
+		public void Update()
+		{
+			switch (CurrentGameState)
+			{
+				//start state, on tap, start the game and spawn carrots!
+				case GameState.Start:
+					if (Input.GetMouseButtonUp(0))
+					{
+						CurrentGameState = GameState.Playing;
+						StartCoroutine(NextRound());
+						BananaSpawner.StartBananaSpawning();
+					}
+					break;
+
+				case GameState.Playing:
+					if (Lives == 0) //we lost
+					{
+						//no more rounds
+						StopCoroutine(NextRound());
+						DestroyExistingEnemiesAndBananas();
+						BananaSpawner.StopBananaSpawning();
+						CurrentGameState = GameState.Lost;
+					}
+					else if (FinalRoundFinished && Enemies.Count(x => x != null) == 0)
+					{
+						DestroyExistingEnemiesAndBananas();
+						BananaSpawner.StopBananaSpawning();
+						CurrentGameState = GameState.Won;
+					}
+					break;
+
+				case GameState.Won:
+					if (Input.GetMouseButtonUp(0))
+						//restart
+						Application.LoadLevel(Application.loadedLevel);
+					break;
+
+				case GameState.Lost:
+					if (Input.GetMouseButtonUp(0))
+						//restart
+						Application.LoadLevel(Application.loadedLevel);
+					break;
+			}
+		}
+
+		private void DestroyExistingEnemiesAndBananas()
+		{
+			//get all the enemies
+			foreach (var item in Enemies.Where(item => item != null))
+				Destroy(item.gameObject);
+			//get all the carrots
+			var bananas = GameObject.FindGameObjectsWithTag("Banana");
+			foreach (var item in bananas)
+				Destroy(item);
+		}
+
+		public void OnGUI()
+		{
+			Utilities.AutoResize(800, 480);
+			switch (CurrentGameState)
+			{
+				case GameState.Start:
+					InfoText.text = "Tap to start!";
+					break;
+
+				case GameState.Playing:
+					InfoText.text = "Money: " + MoneyAvailable + "\n"
+					                + "Life: " + Lives + "\n" +
+					                string.Format("round {0} of {1}", currentRoundIndex + 1, levelStuffFromXML.Rounds.Count);
+					break;
+
+				case GameState.Won:
+					InfoText.text = "Won! Tap to restart!";
+					break;
+
+				case GameState.Lost:
+					InfoText.text = "Lost :( Tap to restart!";
+					break;
+			}
+		}
+	}
 }

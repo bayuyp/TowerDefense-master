@@ -1,47 +1,31 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 namespace Assets.Scripts
 {
-    /// <summary>
-    /// Simple class to hold all our level details
-    /// </summary>
-    public class LevelStuffFromXML
-    {
-        public float MinCarrotSpawnTime;
-        public float MaxCarrotSpawnTime;
-        public int InitialMoney;
-        public List<Round> Rounds;
-        public List<Vector2> Paths;
-        public List<Vector2> Waypoints;
-        public Vector2 Tower;
-        public LevelStuffFromXML()
-        {
-            Paths = new List<Vector2>();
-            Waypoints = new List<Vector2>();
-            Rounds = new List<Round>();
-        }
+	public class LevelStuffFromXML
+	{
+		public int InitialMoney;
+		public float MaxBananaSpawnTime;
+		public float MinBananaSpawnTime;
+		public List<Vector2> Paths;
+		public List<Round> Rounds;
+		public Vector2 Tower;
+		public List<Vector2> Waypoints;
 
-    }
+		public LevelStuffFromXML()
+		{
+			Paths = new List<Vector2>();
+			Waypoints = new List<Vector2>();
+			Rounds = new List<Round>();
+		}
+	}
 
-    /// <summary>
-    /// Some basic information about each game round
-    /// </summary>
-    public class Round
-    {
+	public class Round
+	{
 		public int NoOfEnemies { get; set; }
-        public int NoOfEnemiesEasy { get; set; }
+		public int NoOfEnemiesEasy { get; set; }
 		public int NoOfEnemiesNormal { get; set; }
 		public int NoOfEnemiesHard { get; set; }
-		//public Round(int num)
-		//{
-		//	NoOfEnemies = num;
-		//}
-    }
-
-
-    
+	}
 }
