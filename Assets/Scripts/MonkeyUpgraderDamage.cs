@@ -5,14 +5,13 @@
 		public override void Upgrade()
 		{
 			GameManager.Instance.AlterMoneyAvailable(MonkeyBase.UpgradeCostDamage);
-			MonkeyBase.Damage += MonkeyBase.Damage*20/100;
+			MonkeyBase.Damage += MonkeyBase.Damage*50/100;
 			MonkeyBase.LevelDamage++;
 		}
 
 		public override bool CanUpgrade()
 		{
-			return MonkeyBase.GetComponent<MonkeyBase>().UpgradeCostDamage <= GameManager.Instance.MoneyAvailable &&
-			       base.CanUpgrade();
+			return base.CanUpgrade() && MonkeyBase.UpgradeCostDamage <= GameManager.Instance.MoneyAvailable;
 		}
 	}
 }

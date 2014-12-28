@@ -60,17 +60,21 @@ namespace Assets.Scripts
 
 			var mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 			if (Input.GetMouseButtonDown(0) &&
-			    GetComponent<CircleCollider2D>() ==
+			    GetComponent<BoxCollider2D>() ==
 			    Physics2D.OverlapPoint(mousePos, 1 << LayerMask.NameToLayer("Monkey")))
 				isMouseDown = true;
-			else if (Input.GetMouseButtonUp(0) && isMouseDown && GetComponent<CircleCollider2D>() ==
-			         Physics2D.OverlapPoint(mousePos, 1 << LayerMask.NameToLayer("Monkey")))
+			else if (Input.GetMouseButtonUp(0))
 			{
-				GameManager.Instance.ShowMonkeyUpgrader(this);
+				if (GetComponent<BoxCollider2D>() ==
+				    Physics2D.OverlapPoint(mousePos, 1 << LayerMask.NameToLayer("Monkey")))
+					if (isMouseDown)
+						GameManager.Instance.ShowMonkeyUpgrader(this);
+					else
+						GameManager.Instance.HideMonkeyUpgrade();
+				else
+					GameManager.Instance.HideMonkeyUpgrade();
 				isMouseDown = false;
 			}
-			else
-				isMouseDown = false;
 
 			//searching for an enemy
 			switch (state)

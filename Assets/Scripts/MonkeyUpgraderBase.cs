@@ -5,14 +5,14 @@ namespace Assets.Scripts
 {
 	public class MonkeyUpgraderBase : MonoBehaviour
 	{
-		public bool IsEnabled;
+		private bool isEnabled;
 		private bool isMouseDown;
 		public MonkeyBase MonkeyBase;
 
 		public void Start()
 		{
 			isMouseDown = false;
-			IsEnabled = false;
+			Hide();
 		}
 
 		public void Update()
@@ -25,30 +25,37 @@ namespace Assets.Scripts
 			    GetComponent<BoxCollider2D>() ==
 			    Physics2D.OverlapPoint(mousePos, 1 << LayerMask.NameToLayer("MonkeyUpgrader")))
 				isMouseDown = true;
-			else if (Input.GetMouseButtonUp(0) && isMouseDown && GetComponent<BoxCollider2D>() ==
-			         Physics2D.OverlapPoint(mousePos, 1 << LayerMask.NameToLayer("MonkeyUpgrader")))
+			else if (Input.GetMouseButtonUp(0))
 			{
-				Upgrade();
+				if (isMouseDown && GetComponent<BoxCollider2D>() ==
+				    Physics2D.OverlapPoint(mousePos, 1 << LayerMask.NameToLayer("MonkeyUpgrader")))
+				{
+					Upgrade();
+				}
 				isMouseDown = false;
 			}
-			else
-				isMouseDown = false;
 		}
 
 		public void Show()
 		{
-			IsEnabled = true;
+			isEnabled = true;
+			var temp = renderer.material.color;
+			temp.a = 1f;
+			renderer.material.color = temp;
 			//munculkan, kalo duit kurang di transparankan
 		}
 
 		public void Hide()
 		{
-			IsEnabled = false;
+			isEnabled = false;
+			var temp = renderer.material.color;
+			temp.a = 0f;
+			renderer.material.color = temp;
 		}
 
 		public virtual bool CanUpgrade()
 		{
-			return IsEnabled;
+			return MonkeyBase != null && isEnabled;
 		}
 
 		public virtual void Upgrade()

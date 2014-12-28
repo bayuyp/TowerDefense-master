@@ -11,8 +11,7 @@
 
 		public override bool CanUpgrade()
 		{
-			return MonkeyBase.GetComponent<MonkeyBase>().UpgradeCostSpeed <= GameManager.Instance.MoneyAvailable &&
-			       base.CanUpgrade();
+			return base.CanUpgrade() && MonkeyBase.UpgradeCostSpeed <= GameManager.Instance.MoneyAvailable;
 		}
 	}
 }

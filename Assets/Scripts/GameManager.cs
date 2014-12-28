@@ -121,20 +121,34 @@ namespace Assets.Scripts
 			var pathLayerId = LayerMask.NameToLayer("Path");
 			var towerLayerId = LayerMask.NameToLayer("Tower");
 			var bananaLayerId = LayerMask.NameToLayer("Banana");
-			Console.WriteLine(monkeyLayerId);
-			Physics2D.IgnoreLayerCollision(monkeyLayerId, enemyLayerId); //MonkeyMedium and Enemy (when dragging the bunny)
-			Physics2D.IgnoreLayerCollision(arrowLayerId, monkeyGeneratorLayerId); //ArrowBase and MonkeyGenerator
-			Physics2D.IgnoreLayerCollision(arrowLayerId, backgroundLayerId); //ArrowBase and Background
-			Physics2D.IgnoreLayerCollision(arrowLayerId, pathLayerId); //ArrowBase and Path
-			Physics2D.IgnoreLayerCollision(arrowLayerId, monkeyLayerId); //ArrowBase and MonkeyMedium
-			Physics2D.IgnoreLayerCollision(arrowLayerId, towerLayerId); //ArrowBase and Tower
-			Physics2D.IgnoreLayerCollision(arrowLayerId, bananaLayerId); //ArrowBase and Banana
+			var monkeyUpgraderLayerId = LayerMask.NameToLayer("MonkeyUpgrader");
+
+			Physics2D.IgnoreLayerCollision(monkeyLayerId, enemyLayerId);
+			Physics2D.IgnoreLayerCollision(arrowLayerId, monkeyGeneratorLayerId);
+			Physics2D.IgnoreLayerCollision(arrowLayerId, backgroundLayerId);
+			Physics2D.IgnoreLayerCollision(arrowLayerId, pathLayerId);
+			Physics2D.IgnoreLayerCollision(arrowLayerId, monkeyLayerId);
+			Physics2D.IgnoreLayerCollision(arrowLayerId, towerLayerId);
+			Physics2D.IgnoreLayerCollision(arrowLayerId, bananaLayerId);
+			Physics2D.IgnoreLayerCollision(monkeyUpgraderLayerId, monkeyLayerId);
+			Physics2D.IgnoreLayerCollision(monkeyUpgraderLayerId, enemyLayerId);
+			Physics2D.IgnoreLayerCollision(monkeyUpgraderLayerId, arrowLayerId);
+			Physics2D.IgnoreLayerCollision(monkeyUpgraderLayerId, pathLayerId);
+			Physics2D.IgnoreLayerCollision(monkeyUpgraderLayerId, bananaLayerId);
+			Physics2D.IgnoreLayerCollision(monkeyUpgraderLayerId, backgroundLayerId);
+			Physics2D.IgnoreLayerCollision(bananaLayerId, monkeyLayerId);
+			Physics2D.IgnoreLayerCollision(bananaLayerId, enemyLayerId);
+			Physics2D.IgnoreLayerCollision(bananaLayerId, monkeyGeneratorLayerId);
+			Physics2D.IgnoreLayerCollision(bananaLayerId, backgroundLayerId);
+			Physics2D.IgnoreLayerCollision(bananaLayerId, pathLayerId);
+			Physics2D.IgnoreLayerCollision(bananaLayerId, towerLayerId);
 		}
 
 		private IEnumerator NextRound()
 		{
 			//give the player 2 secs to do stuff
 			yield return new WaitForSeconds(2f);
+
 			//get a reference to the next round details
 			var currentRound = levelStuffFromXML.Rounds[currentRoundIndex];
 
@@ -170,7 +184,7 @@ namespace Assets.Scripts
 			}
 			for (var i = 0; i < currentRound.NoOfEnemiesHard; i++)
 			{
-//spawn a new enemy
+				//spawn a new enemy
 				var enemy = Instantiate(EnemyHardPrefab, Waypoints[0].position, Quaternion.identity) as GameObject;
 				if (enemy != null)
 				{
