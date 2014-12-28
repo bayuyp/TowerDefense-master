@@ -2,8 +2,10 @@
 
 namespace Assets.Scripts
 {
-	public class Arrow : MonoBehaviour
+	public class ArrowBase : MonoBehaviour
 	{
+		public int ArrowDamage;
+
 		public void Disable()
 		{
 			CancelInvoke();

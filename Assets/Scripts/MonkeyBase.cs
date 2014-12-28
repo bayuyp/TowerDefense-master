@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using UnityEngine;
 
 namespace Assets.Scripts
@@ -92,7 +93,7 @@ namespace Assets.Scripts
 			    < Constants.MinDistanceForMonkeyToShoot)
 			{
 				//create a new arrow
-				var go = ObjectPoolerManager.Instance.ArrowFastPooler.GetPooledObject();
+				var go = GetPooledArrow();
 				go.transform.position = ArrowSpawnPosition.position;
 				go.transform.rotation = transform.rotation;
 				go.SetActive(true);
@@ -102,6 +103,11 @@ namespace Assets.Scripts
 			}
 			else //find another enemy
 				state = MonkeyState.Searching;
+		}
+
+		protected virtual GameObject GetPooledArrow()
+		{
+			throw new NotImplementedException();
 		}
 	}
 }

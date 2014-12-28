@@ -43,14 +43,14 @@ namespace Assets.Scripts
 
 				tempMonkey.transform.position = hits[0].collider.gameObject.transform.position;
 
-				
+
 				if (hits.Where(x => x.collider.gameObject.tag == "Path"
 				                    || x.collider.gameObject.tag == "Tower").Any()
 				    || hits.Where(x => x.collider.gameObject.tag == "Monkey").Count() > 1)
 				{
 					var backgroundBehindPath = hits.Where
 						(x => x.collider.gameObject.tag == "Background").First().collider.gameObject;
-					
+
 					backgroundBehindPath.GetComponent<SpriteRenderer>().color = Constants.RedColor;
 
 					if (tempBackgroundBehindPath != backgroundBehindPath)
@@ -90,7 +90,6 @@ namespace Assets.Scripts
 			}
 		}
 
-		//make background sprite appear as it is
 		private void ResetTempBackgroundColor()
 		{
 			if (tempBackgroundBehindPath != null)

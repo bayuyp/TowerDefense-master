@@ -121,12 +121,12 @@ namespace Assets.Scripts
 			var bananaLayerId = LayerMask.NameToLayer("Banana");
 			Console.WriteLine(monkeyLayerId);
 			Physics2D.IgnoreLayerCollision(monkeyLayerId, enemyLayerId); //MonkeyMedium and Enemy (when dragging the bunny)
-			Physics2D.IgnoreLayerCollision(arrowLayerId, monkeyGeneratorLayerId); //Arrow and MonkeyGenerator
-			Physics2D.IgnoreLayerCollision(arrowLayerId, backgroundLayerId); //Arrow and Background
-			Physics2D.IgnoreLayerCollision(arrowLayerId, pathLayerId); //Arrow and Path
-			Physics2D.IgnoreLayerCollision(arrowLayerId, monkeyLayerId); //Arrow and MonkeyMedium
-			Physics2D.IgnoreLayerCollision(arrowLayerId, towerLayerId); //Arrow and Tower
-			Physics2D.IgnoreLayerCollision(arrowLayerId, bananaLayerId); //Arrow and Banana
+			Physics2D.IgnoreLayerCollision(arrowLayerId, monkeyGeneratorLayerId); //ArrowBase and MonkeyGenerator
+			Physics2D.IgnoreLayerCollision(arrowLayerId, backgroundLayerId); //ArrowBase and Background
+			Physics2D.IgnoreLayerCollision(arrowLayerId, pathLayerId); //ArrowBase and Path
+			Physics2D.IgnoreLayerCollision(arrowLayerId, monkeyLayerId); //ArrowBase and MonkeyMedium
+			Physics2D.IgnoreLayerCollision(arrowLayerId, towerLayerId); //ArrowBase and Tower
+			Physics2D.IgnoreLayerCollision(arrowLayerId, bananaLayerId); //ArrowBase and Banana
 		}
 
 		private IEnumerator NextRound()

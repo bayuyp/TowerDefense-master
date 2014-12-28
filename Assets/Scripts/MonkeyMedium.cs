@@ -1,4 +1,6 @@
-﻿namespace Assets.Scripts
+﻿using UnityEngine;
+
+namespace Assets.Scripts
 {
 	public class MonkeyMedium : MonkeyBase
 	{
@@ -6,6 +8,11 @@
 		{
 			ShootWaitTime = Constants.MonkeyMediumSpeed;
 			base.Start();
+		}
+
+		protected override GameObject GetPooledArrow()
+		{
+			return ObjectPoolerManager.Instance.ArrowMediumPooler.GetPooledObject();
 		}
 	}
 }
