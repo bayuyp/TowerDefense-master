@@ -7,6 +7,7 @@
 			Health = 100;
 			Bounty = 45;
 			Speed = 2f;
+			Damage = 3;
 			base.Start();
 		}
 	}

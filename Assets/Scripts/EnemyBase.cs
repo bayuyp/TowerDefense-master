@@ -7,8 +7,9 @@ namespace Assets.Scripts
 	{
 		public int Bounty;
 		public int Health;
-		private int nextWaypointIndex;
 		public float Speed;
+		public int Damage;
+		private int nextWaypointIndex;
 		public event EventHandler EnemyKilled;
 		public void Start() {}
 
@@ -20,7 +21,7 @@ namespace Assets.Scripts
 				if (nextWaypointIndex == GameManager.Instance.Waypoints.Length - 1)
 				{
 					RemoveAndDestroy();
-					GameManager.Instance.Lives--;
+					GameManager.Instance.Lives -= Damage;
 				}
 				else
 				{
