@@ -53,5 +53,5 @@
 	<Round NoOfEnemiesEasy="5" NoOfEnemiesNormal="0" NoOfEnemiesHard="0" />
   </Rounds>
   <Tower X="-5.6" Y="-0.88" />
-  <OtherStuff InitialMoney="100" MinBananaSpawnTime="5" MaxBananaSpawnTime="10" />
+  <OtherStuff InitialMoney="150" MinBananaSpawnTime="5" MaxBananaSpawnTime="8" />
 </Elements>

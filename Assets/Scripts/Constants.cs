@@ -13,6 +13,6 @@ namespace Assets.Scripts
 		public static readonly int MonkeyFastCost = 75;
 		public static readonly int MonkeySlowCost = 100;
 		public static readonly int BananaAward = 10;
-		public static readonly float ArrowSpeed = 500f;
+		public static readonly float ArrowSpeed = 400f;
 	}
 }

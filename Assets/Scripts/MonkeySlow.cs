@@ -7,8 +7,8 @@ namespace Assets.Scripts
 		public new void Start()
 		{
 			Speed = 3f;
-			Range = 100f;
-			Damage = 50;
+			Range = 5f;
+			Damage = 80;
 			base.Start();
 		}
 
