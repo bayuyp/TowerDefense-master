@@ -14,11 +14,12 @@ public class OnClickButton : MonoBehaviour {
 	}
 
 	public void OnChange(int index){
-		if(index == 0){
-			Application.Quit();
-		}else {
-			Application.LoadLevel(index);
-		}
+		Application.LoadLevel(index);
+		
+	}
+
+	public void Quit(){
+		Application.Quit();
 	}
 
 	public void LoadLevel(int index){
