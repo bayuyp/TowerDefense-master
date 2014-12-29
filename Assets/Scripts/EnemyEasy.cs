@@ -6,7 +6,7 @@
 		{
 			Health = 20;
 			Bounty = 20;
-			Speed = 1f;
+			Speed = 3f;
 			Damage = 1;
 			base.Start();
 		}

@@ -1,0 +1,64 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Elements>
+  <PathPieces>
+    <Path X="-4.33" Y="3.92" />
+    <Path X="-1.23" Y="1.91" />
+    <Path X="4.71" Y="-0.11" />
+    <Path X="1.77" Y="-0.11" />
+    <Path X="4.64" Y="-3.84" />
+    <Path X="4.75" Y="-2.02" />
+    <Path X="-1.1" Y="-0.02" />
+    <Path X="3.66" Y="-3.88" />
+    <Path X="3.75" Y="-2.01" />
+    <Path X="0.7" Y="1.89" />
+    <Path X="0.67" Y="2.91" />
+    <Path X="2.76" Y="-2.04" />
+    <Path X="1.75" Y="-2.98" />
+    <Path X="0.84" Y="-0.11" />
+    <Path X="0.66" Y="3.89" />
+    <Path X="-0.33" Y="3.87" />
+    <Path X="-2.16" Y="0.97" />
+    <Path X="5.65" Y="-3.81" />
+    <Path X="4.74" Y="-1.12" />
+    <Path X="1.73" Y="-2.01" />
+    <Path X="-1.36" Y="3.9" />
+    <Path X="-0.25" Y="1.93" />
+    <Path X="-2.38" Y="3.9" />
+    <Path X="-2.23" Y="1.88" />
+    <Path X="-2.09" Y="0.03" />
+    <Path X="1.78" Y="-3.87" />
+    <Path X="-0.08" Y="-0.08" />
+    <Path X="3.72" Y="-0.14" />
+    <Path X="-3.36" Y="3.89" />
+    <Path X="2.71" Y="-3.83" />
+    <Path X="2.75" Y="-0.15" />
+    <Path X="6.6" Y="-3.8" />
+    <Path X="7.587812" Y="-3.79284286" />
+    <Path X="8.61" Y="-3.77" />
+  </PathPieces>
+  <Waypoints>
+	<Waypoint X="8.61" Y="-3.77" />
+	<Waypoint X="1.78" Y="-3.87" />
+	<Waypoint X="1.73" Y="-2.01" />
+	<Waypoint X="4.75" Y="-2.02" />
+	<Waypoint X="4.71" Y="-0.11" />
+	<Waypoint X="-2.09" Y="0.03" />
+	<Waypoint X="-2.23" Y="1.88" />
+	<Waypoint X="0.7" Y="1.89" />
+	<Waypoint X="0.66" Y="3.89" />
+	<Waypoint X="-5.6" Y="3.9" />
+	
+
+    
+    
+  </Waypoints>
+  <Rounds>
+    <Round NoOfEnemiesEasy="3" NoOfEnemiesNormal="0" NoOfEnemiesHard="0" />
+	<Round NoOfEnemiesEasy="3" NoOfEnemiesNormal="0" NoOfEnemiesHard="0" />
+	<Round NoOfEnemiesEasy="4" NoOfEnemiesNormal="0" NoOfEnemiesHard="0" />
+	<Round NoOfEnemiesEasy="4" NoOfEnemiesNormal="0" NoOfEnemiesHard="0" />
+	<Round NoOfEnemiesEasy="5" NoOfEnemiesNormal="0" NoOfEnemiesHard="0" />
+  </Rounds>
+  <Tower X="-5.6" Y="3.9" />
+  <OtherStuff InitialMoney="100" MinBananaSpawnTime="5" MaxBananaSpawnTime="10" />
+</Elements>

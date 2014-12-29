@@ -46,6 +46,21 @@ namespace Assets.Scripts
 				case 10:
 					stringLevel = "Level10";
 					break;
+				case 11:
+				stringLevel = "Level11";
+					break;
+				case 12:
+				stringLevel = "Level12";
+					break;
+				case 13:
+				stringLevel = "Level13";
+					break;
+				case 14:
+				stringLevel = "Level14";
+					break;
+				case 15:
+				stringLevel = "Level15";
+					break;
 			}
 
 			var ls = new LevelStuffFromXML();

@@ -1,42 +1,32 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-
 <Elements>
-	<PathPieces>
-		<Path X="-3.38" Y="-4.19" />
-		<Path X="-4.4" Y="-3.76" />
-		<Path X="-5.9" Y="3.81" />
-		<Path X="-6.39" Y="-0.23" />
-		<Path X="-5.32" Y="2.8" />
-		<Path X="6.08" Y="-2.74" />
-		<Path X="-6.86" Y="4.16" />
-		<Path X="-2.33" Y="-4.41" />
-		<Path X="4.99" Y="-3.15" />
-		<Path X="-1.28" Y="-4.45" />
-		<Path X="-6.69" Y="-1.27" />
-		<Path X="-5.79" Y="0.73" />
-		<Path X="8.13" Y="-2.11" />
-		<Path X="3.99" Y="-3.51" />
-		<Path X="-6.17" Y="-2.24" />
-		<Path X="-5.28" Y="1.72" />
-		<Path X="7.12" Y="-2.5" />
-		<Path X="-5.35" Y="-3.1" />
-		<Path X="-0.19" Y="-4.35" />
-		<Path X="0.9106706" Y="-4.224653" />
-		<Path X="1.9027555" Y="-3.987415" />
-		<Path X="2.89484024" Y="-3.72861028" />
-	</PathPieces>
-	<Waypoints>
-		<Waypoint X="8.78" Y="-2.3" />
-		<Waypoint X="7.8" Y="-2.42" />
-		<Waypoint X="-2.63" Y="-4.73" />
-		<Waypoint X="-7.03" Y="-1.59" />
-		<Waypoint X="-5.55" Y="1.47" />
-		<Waypoint X="-7.15" Y="3.87" />
-		<Waypoint X="-8.31" Y="3.95" />
-	</Waypoints>
-	<Rounds>
-		<Round NoOfEnemiesEasy="5" NoOfEnemiesNormal="2" NoOfEnemiesHard="2" />
-	</Rounds>
-	<Tower X="-8.02" Y="4.2" />
-	<OtherStuff InitialMoney="100" />
+  <PathPieces>
+    <Path X="8.37" Y="-1.25" />
+    <Path X="-4.74" Y="-0.37" />
+    <Path X="-4.08" Y="0.42" />
+    <Path X="-3.39" Y="1.18" />
+    <Path X="-2.69" Y="1.94" />
+    <Path X="7.82" Y="-0.41" />
+    <Path X="7.32" Y="0.52" />
+    <Path X="6.9" Y="1.4" />
+    <Path X="-1.88682652" Y="2.584045" />
+    <Path X="5.7" Y="3.08" />
+    <Path X="4.78" Y="3.27" />
+    <Path X="-1.03022969" Y="3.250287" />
+    <Path X="-0.0546610765" Y="3.32167" />
+    <Path X="0.8971132" Y="3.36925864" />
+    <Path X="1.87268174" Y="3.29787564" />
+    <Path X="2.84825039" Y="3.32167" />
+    <Path X="3.80002475" Y="3.29787564" />
+    <Path X="6.32" Y="2.25" />
+  </PathPieces>
+  <Waypoints>
+    <Waypoint X="8.84" Y="-1.53" />
+    <Waypoint X="-5.6" Y="-1.65" />
+  </Waypoints>
+  <Rounds>
+    <Round NoOfEnemiesEasy="1" NoOfEnemiesNormal="1" NoOfEnemiesHard="1" />
+  </Rounds>
+  <Tower X="-5.45598" Y="-1.41340685" />
+  <OtherStuff InitialMoney="100" />
 </Elements>

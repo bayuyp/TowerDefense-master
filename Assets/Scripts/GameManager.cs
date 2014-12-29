@@ -34,6 +34,7 @@ namespace Assets.Scripts
 		public GameObject TowerPrefab;
 		public Transform[] Waypoints;
 		private GameObject waypointsParent;
+		public int gameLevel;
 
 		[HideInInspector]
 		public static GameManager Instance { get; private set; }
@@ -65,7 +66,7 @@ namespace Assets.Scripts
 
 		public void Start()
 		{
-			const int gameLevel = 5;
+			//const int gameLevel = 5;
 			IgnoreLayerCollisions();
 
 			Enemies = new List<GameObject>();
