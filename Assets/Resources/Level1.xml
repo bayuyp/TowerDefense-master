@@ -23,10 +23,10 @@
   </Waypoints>
   <Rounds>
     <Round NoOfEnemiesEasy="5" NoOfEnemiesNormal="0" NoOfEnemiesHard="0" />
-	<Round NoOfEnemiesEasy="5" NoOfEnemiesNormal="0" NoOfEnemiesHard="0" />
-	<Round NoOfEnemiesEasy="5" NoOfEnemiesNormal="0" NoOfEnemiesHard="0" />
-	<Round NoOfEnemiesEasy="5" NoOfEnemiesNormal="0" NoOfEnemiesHard="0" />
-	<Round NoOfEnemiesEasy="5" NoOfEnemiesNormal="0" NoOfEnemiesHard="0" />
+	<Round NoOfEnemiesEasy="6" NoOfEnemiesNormal="0" NoOfEnemiesHard="0" />
+	<Round NoOfEnemiesEasy="6" NoOfEnemiesNormal="0" NoOfEnemiesHard="0" />
+	<Round NoOfEnemiesEasy="7" NoOfEnemiesNormal="0" NoOfEnemiesHard="0" />
+	<Round NoOfEnemiesEasy="7" NoOfEnemiesNormal="0" NoOfEnemiesHard="0" />
   </Rounds>
   <Tower X="-5.47674" Y="0.188337192" />
   <OtherStuff InitialMoney="50" MinBananaSpawnTime="5" MaxBananaSpawnTime="10" />

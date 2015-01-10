@@ -47,18 +47,14 @@
 	<Waypoint X="0.7" Y="1.89" />
 	<Waypoint X="0.66" Y="3.89" />
 	<Waypoint X="-5.6" Y="3.9" />
-	
-
-    
-    
   </Waypoints>
   <Rounds>
-    <Round NoOfEnemiesEasy="3" NoOfEnemiesNormal="0" NoOfEnemiesHard="0" />
-	<Round NoOfEnemiesEasy="3" NoOfEnemiesNormal="0" NoOfEnemiesHard="0" />
-	<Round NoOfEnemiesEasy="4" NoOfEnemiesNormal="0" NoOfEnemiesHard="0" />
-	<Round NoOfEnemiesEasy="4" NoOfEnemiesNormal="0" NoOfEnemiesHard="0" />
-	<Round NoOfEnemiesEasy="5" NoOfEnemiesNormal="0" NoOfEnemiesHard="0" />
+    <Round NoOfEnemiesEasy="1" NoOfEnemiesNormal="5" NoOfEnemiesHard="4" />
+	<Round NoOfEnemiesEasy="1" NoOfEnemiesNormal="5" NoOfEnemiesHard="4" />
+	<Round NoOfEnemiesEasy="0" NoOfEnemiesNormal="6" NoOfEnemiesHard="4" />
+	<Round NoOfEnemiesEasy="0" NoOfEnemiesNormal="6" NoOfEnemiesHard="4" />
+	<Round NoOfEnemiesEasy="0" NoOfEnemiesNormal="5" NoOfEnemiesHard="5" />
   </Rounds>
   <Tower X="-5.6" Y="3.9" />
-  <OtherStuff InitialMoney="200" MinBananaSpawnTime="5" MaxBananaSpawnTime="60" />
+  <OtherStuff InitialMoney="200" MinBananaSpawnTime="5" MaxBananaSpawnTime="6" />
 </Elements>

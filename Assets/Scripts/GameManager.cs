@@ -240,7 +240,7 @@ namespace Assets.Scripts
 					break;
 
 				case GameState.Playing:
-					if (Lives == 0) //we lost
+					if (Lives <= 0) //we lost
 					{
 						//no more rounds
 						StopCoroutine(NextRound());
